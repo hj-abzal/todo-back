@@ -12,11 +12,16 @@ export class UsersService {
         return await this.userRepository.create(dto);
     }
 
-    async getAllUsers() {
+    async getAllUsers(): Promise<User[]>  {
         return this.userRepository.findAll({ include: { all: true } });
     }
 
-    async getUserByTelegramID(telegramID: number): Promise<User> {
+    async getUserById(id: number): Promise<User> {
+        return this.userRepository.findByPk(id);
+    }
+
+    async getByTelegramID(telegramID: number): Promise<User> {
         return this.userRepository.findOne({ where: { telegramID }, include: { all: true } });
     }
+
 }
