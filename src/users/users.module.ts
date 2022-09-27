@@ -10,7 +10,7 @@ import {AuthModule} from '../auth/auth.module';
   controllers: [UsersController],
   imports: [
     SequelizeModule.forFeature([User]),
-      forwardRef(() => AuthModule)
+    forwardRef(() => AuthModule),
   ],
   exports: [UsersService]
 })

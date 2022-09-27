@@ -15,7 +15,7 @@ export class UsersController {
     @ApiResponse({status: 200, type: User})
     @Post()
     createUser(@Body() userDto: CreateUserDto) {
-        return this.userService.createUser(userDto);
+        return this.userService.create(userDto);
     }
 
     @ApiOperation({summary: 'Get all users'})
@@ -23,13 +23,13 @@ export class UsersController {
     @UseGuards(JwtAuthGuard)
     @Get()
     getAllUsers() {
-        return this.userService.getAllUsers();
+        return this.userService.getAll();
     }
 
     @ApiOperation({summary: 'Get one user by id'})
     @ApiResponse({status: 200, type: User})
     @Get('/:id')
     getUserById(@Param('id') id: number) {
-        return this.userService.getUserById(id);
+        return this.userService.getById(id);
     }
 }

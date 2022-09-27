@@ -20,23 +20,23 @@ export class AuthService {
     }
 
     async registration(userDto: CreateUserDto) {
-        const candidate = await this.userService.getByTelegramID(userDto.telegramID);
+        const candidate = await this.userService.getByTelegramID(userDto.telegram_id);
         if (candidate) {
             throw new HttpException("User with such telegramID already exist", HttpStatus.BAD_REQUEST);
         }
         const hashPassword = await bcrypt.hash(userDto.password, 5);
-        const user = await this.userService.createUser({ ...userDto, password: hashPassword });
+        const user = await this.userService.create({ ...userDto, password: hashPassword });
 
         return this.generateToken(user);
     }
 
     private async generateToken(user: User) {
-        const { telegramID, id, login } = user;
-        return { token: this.jwtService.sign({ telegramID, id, login  }) };
+        const { telegram_id, id, login } = user;
+        return { token: this.jwtService.sign({ telegram_id, id, login  }) };
     }
 
     private async validateUser(userDto: CreateUserDto) {
-        const user = await this.userService.getByTelegramID(userDto.telegramID);
+        const user = await this.userService.getByTelegramID(userDto.telegram_id);
         if (user) {
             const checkPassword = await bcrypt.compare(userDto.password, user.password);
             if (checkPassword) {
@@ -44,6 +44,6 @@ export class AuthService {
             }
             throw new UnauthorizedException({ message: "Invalid password" });
         }
-        throw new UnauthorizedException({ message: "Invalid telegramID" });
+        throw new UnauthorizedException({ message: "Invalid telegram_id" });
     }
 }

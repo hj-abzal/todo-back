@@ -1,8 +1,9 @@
-import {Column, DataType, Model, Table} from 'sequelize-typescript';
+import {Column, DataType, HasMany, Model, Table} from 'sequelize-typescript';
 import {ApiProperty} from '@nestjs/swagger';
+import {Todolists} from '../todolists/todolists.model';
 
 interface UserCreationAttrs {
-    telegramID: number,
+    telegram_id: number,
     login: string,
     password: string
 }
@@ -16,7 +17,7 @@ export class User extends Model<User, UserCreationAttrs> {
 
     @ApiProperty({example: 1071927152, description: 'unic telegram id of user'})
     @Column({ type: DataType.INTEGER, unique: true, allowNull: false })
-    telegramID: number;
+    telegram_id: number;
 
     @ApiProperty({example: 'Suan', description: 'login you want'})
     @Column({ type: DataType.STRING, allowNull: false })
@@ -25,4 +26,7 @@ export class User extends Model<User, UserCreationAttrs> {
     @ApiProperty({example: '7777', description: 'password of user'})
     @Column({ type: DataType.STRING, allowNull: false })
     password: string;
+
+    @HasMany(() => Todolists)
+    todolists: Todolists[]
 }

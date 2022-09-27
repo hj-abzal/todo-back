@@ -8,20 +8,20 @@ export class UsersService {
     constructor(@InjectModel(User) private userRepository: typeof User) {
     }
 
-    async createUser(dto: CreateUserDto): Promise<User> {
+    async create(dto: CreateUserDto): Promise<User> {
         return await this.userRepository.create(dto);
     }
 
-    async getAllUsers(): Promise<User[]>  {
-        return this.userRepository.findAll({ include: { all: true } });
+    async getAll(): Promise<User[]>  {
+        return this.userRepository.findAll();
     }
 
-    async getUserById(id: number): Promise<User> {
-        return this.userRepository.findByPk(id);
+    async getById(id: number): Promise<User> {
+        return this.userRepository.findByPk(id, { include: { all: true } });
     }
 
-    async getByTelegramID(telegramID: number): Promise<User> {
-        return this.userRepository.findOne({ where: { telegramID }, include: { all: true } });
+    async getByTelegramID(telegram_id: number): Promise<User> {
+        return this.userRepository.findOne({ where: { telegram_id }, include: { all: true } });
     }
 
 }
