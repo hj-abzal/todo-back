@@ -1,7 +1,7 @@
-import {BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table} from 'sequelize-typescript';
+import {Column, DataType, ForeignKey, HasMany, Model, Table} from 'sequelize-typescript';
 import {ApiProperty} from '@nestjs/swagger';
-import {User} from '../users/users.model';
-import {Tasks} from '../tasks/tasks.model';
+import {User} from '../../auth/models/users.model';
+import {Tasks} from './tasks.model';
 
 export interface TodolistCreationAttrs {
     title: string,
@@ -23,9 +23,6 @@ export class Todolists extends Model<Todolists, TodolistCreationAttrs> {
     @ForeignKey(() => User)
     @Column({ type: DataType.INTEGER,  allowNull: false })
     user_id: number;
-
-    @BelongsTo(() => User)
-    author: User;
 
     @HasMany(() => Tasks)
     tasks: Tasks[]

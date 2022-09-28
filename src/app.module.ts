@@ -1,13 +1,11 @@
 import {Module} from '@nestjs/common';
 import {SequelizeModule} from '@nestjs/sequelize';
 import {ConfigModule} from '@nestjs/config';
-import {UsersModule} from './users/users.module';
-import {User} from './users/users.model';
+import {User} from './auth/models/users.model';
 import {AuthModule} from './auth/auth.module';
 import {TodolistsModule} from './todolists/todolists.module';
-import {Todolists} from './todolists/todolists.model';
-import {TasksModule} from './tasks/tasks.module';
-import {Tasks} from './tasks/tasks.model';
+import {Todolists} from './todolists/models/todolists.model';
+import {Tasks} from './todolists/models/tasks.model';
 
 @Module({
     imports: [
@@ -25,10 +23,8 @@ import {Tasks} from './tasks/tasks.model';
             models: [User, Todolists, Tasks],
             autoLoadModels: true
         }),
-        UsersModule,
         AuthModule,
         TodolistsModule,
-        TasksModule,
     ],
     controllers: [],
     providers: [],

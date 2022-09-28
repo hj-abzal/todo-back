@@ -1,12 +1,12 @@
-import {Body, Controller, Get, Param, Post, Put, Req, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
-import {TodolistsService} from './todolists.service';
-import {Todolists} from './todolists.model';
+import {TodolistsService} from './services/todolists.service';
+import {Todolists} from './models/todolists.model';
 import {JwtAuthGuard, UserRequestType} from '../auth/jwt-auth.guard';
 import {CreateTodolistDto} from './dto/create-todolist.dto';
-import {TasksService} from '../tasks/tasks.service';
-import {UpdateTask} from '../tasks/tasks.model';
-import {CreateTaskDto} from '../tasks/dto/create-task.dto';
+import {TasksService} from './services/tasks.service';
+import {UpdateTask} from './models/tasks.model';
+import {CreateTaskDto} from './dto/create-task.dto';
 
 @ApiTags('Todolists')
 @Controller('todolists')
@@ -29,8 +29,8 @@ export class TodolistsController {
     @ApiResponse({status: 200, type: [Todolists]})
     @UseGuards(JwtAuthGuard)
     @Get()
-    getAllTodolist() {
-        return this.todolistService.getAll();
+    getAllTodolist(@Req() req: UserRequestType) {
+        return this.todolistService.getAll(req.user.id);
     }
 
     @ApiOperation({summary: 'Get one todolist by id'})
@@ -39,6 +39,14 @@ export class TodolistsController {
     @Get('/:id')
     getTodolistById(@Param('id') id: number) {
         return this.todolistService.getById(id);
+    }
+
+    @ApiOperation({summary: 'Delete one todolist by id'})
+    @ApiResponse({status: 200})
+    @UseGuards(JwtAuthGuard)
+    @Delete('/:id')
+    deleteTodolistById(@Param('id') id: number) {
+        return this.todolistService.delete(id);
     }
 
     @ApiOperation({summary: 'Get tasks of todolist'})
@@ -65,11 +73,22 @@ export class TodolistsController {
     @ApiResponse({status: 200, type: Todolists})
     @UseGuards(JwtAuthGuard)
     @Put('/:todolistId/tasks/:taskId')
-    getTodolistTaskById(
+    updateTodolistTaskById(
         @Param('todolistId') todolistId: number,
         @Param('taskId') taskId: number,
         @Body() body: UpdateTask
     ) {
         return  this.tasksService.updateTask(todolistId, taskId, body);
+    }
+
+    @ApiOperation({summary: 'Delete task by todo and task id'})
+    @ApiResponse({status: 200, type: Todolists})
+    @UseGuards(JwtAuthGuard)
+    @Delete('/:todolistId/tasks/:taskId')
+    deleteTodolistTaskById(
+        @Param('todolistId') todolistId: number,
+        @Param('taskId') taskId: number,
+    ) {
+        return  this.tasksService.delete(taskId);
     }
 }

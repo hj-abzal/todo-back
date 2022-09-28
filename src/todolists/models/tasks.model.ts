@@ -1,6 +1,6 @@
 import {Column, DataType, ForeignKey, Model, Table} from 'sequelize-typescript';
 import {ApiProperty} from '@nestjs/swagger';
-import {Todolists} from '../todolists/todolists.model';
+import {Todolists} from './todolists.model';
 
 export interface TasksCreationAttrs {
     title: string;

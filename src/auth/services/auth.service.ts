@@ -1,9 +1,9 @@
 import {HttpException, HttpStatus, Injectable, UnauthorizedException} from '@nestjs/common';
-import {UsersService} from '../users/users.service';
+import {UsersService} from './users.service';
 import {JwtService} from '@nestjs/jwt';
-import {CreateUserDto} from '../users/dto/create-user.dto';
+import {CreateUserDto} from '../dto/create-user.dto';
 import * as bcrypt from 'bcryptjs';
-import {User} from '../users/users.model';
+import {User} from '../models/users.model';
 
 @Injectable()
 export class AuthService {
@@ -19,20 +19,24 @@ export class AuthService {
         return this.generateToken(user);
     }
 
+    async logout(user: User) {
+        return this.userService.delete(user.id);
+    }
+
     async registration(userDto: CreateUserDto) {
         const candidate = await this.userService.getByTelegramID(userDto.telegram_id);
         if (candidate) {
-            throw new HttpException("User with such telegramID already exist", HttpStatus.BAD_REQUEST);
+            throw new HttpException('User with such telegramID already exist', HttpStatus.BAD_REQUEST);
         }
         const hashPassword = await bcrypt.hash(userDto.password, 5);
-        const user = await this.userService.create({ ...userDto, password: hashPassword });
+        const user = await this.userService.create({...userDto, password: hashPassword});
 
         return this.generateToken(user);
     }
 
     private async generateToken(user: User) {
-        const { telegram_id, id, login } = user;
-        return { token: this.jwtService.sign({ telegram_id, id, login  }) };
+        const {telegram_id, id, login} = user;
+        return {token: this.jwtService.sign({telegram_id, id, login})};
     }
 
     private async validateUser(userDto: CreateUserDto) {
@@ -42,8 +46,8 @@ export class AuthService {
             if (checkPassword) {
                 return user;
             }
-            throw new UnauthorizedException({ message: "Invalid password" });
+            throw new UnauthorizedException({message: 'Invalid password'});
         }
-        throw new UnauthorizedException({ message: "Invalid telegram_id" });
+        throw new UnauthorizedException({message: 'Invalid telegram_id'});
     }
 }

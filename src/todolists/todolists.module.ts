@@ -1,18 +1,21 @@
 import {forwardRef, Module} from '@nestjs/common';
 import {TodolistsController} from './todolists.controller';
-import {TodolistsService} from './todolists.service';
+import {TodolistsService} from './services/todolists.service';
 import {SequelizeModule} from '@nestjs/sequelize';
-import {Todolists} from './todolists.model';
+import {Todolists} from './models/todolists.model';
 import {AuthModule} from '../auth/auth.module';
-import {TasksModule} from '../tasks/tasks.module';
+import {TasksService} from './services/tasks.service';
+import {Tasks} from './models/tasks.model';
 
 @Module({
     controllers: [TodolistsController],
-    providers: [TodolistsService],
+    providers: [
+        TodolistsService,
+        TasksService
+    ],
     imports: [
-        SequelizeModule.forFeature([Todolists]),
+        SequelizeModule.forFeature([Todolists, Tasks]),
         forwardRef(() => AuthModule),
-        TasksModule
     ]
 })
 export class TodolistsModule {

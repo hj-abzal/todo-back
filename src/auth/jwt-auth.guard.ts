@@ -2,7 +2,7 @@ import {CanActivate, ExecutionContext, Injectable, UnauthorizedException} from '
 import {Observable} from 'rxjs';
 import {JwtService} from '@nestjs/jwt';
 import {Request} from 'express';
-import {User} from '../users/users.model';
+import {User} from './models/users.model';
 
 export interface UserRequestType extends Request {
   user: User

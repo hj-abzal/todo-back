@@ -1,11 +1,17 @@
 import {Column, DataType, HasMany, Model, Table} from 'sequelize-typescript';
 import {ApiProperty} from '@nestjs/swagger';
-import {Todolists} from '../todolists/todolists.model';
+import {Todolists} from '../../todolists/models/todolists.model';
+
+export interface UserResponce {
+    telegram_id: number;
+    login: string;
+    id: number;
+}
 
 interface UserCreationAttrs {
-    telegram_id: number,
-    login: string,
-    password: string
+    telegram_id: number;
+    login: string;
+    password: string;
 }
 
 @Table({ tableName: "users" })
