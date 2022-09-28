@@ -22,7 +22,7 @@ export class TodolistsService {
     }
 
     async getAll(user_id: number): Promise<Todolists[]>  {
-        return this.todolistRepository.findAll({where: {user_id}});
+        return this.todolistRepository.findAll({where: {user_id}, include: { all: true }});
     }
 
     async getById(id: number): Promise<Todolists> {
