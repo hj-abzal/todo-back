@@ -21,8 +21,8 @@ export class TodolistsService {
             });
     }
 
-    async getAll(id: number): Promise<Todolists[]>  {
-        return this.todolistRepository.findAll({where: {id}});
+    async getAll(user_id: number): Promise<Todolists[]>  {
+        return this.todolistRepository.findAll({where: {user_id}});
     }
 
     async getById(id: number): Promise<Todolists> {
