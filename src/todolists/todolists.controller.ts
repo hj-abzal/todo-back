@@ -49,6 +49,17 @@ export class TodolistsController {
         return this.todolistService.delete(id);
     }
 
+    @ApiOperation({summary: 'Update one todolist by id'})
+    @ApiResponse({status: 200})
+    @UseGuards(JwtAuthGuard)
+    @Put('/:id')
+    updateTodolistById(
+        @Param('id') id: number,
+        @Body() body: CreateTodolistDto
+    ) {
+        return this.todolistService.update(id, body.title);
+    }
+
     @ApiOperation({summary: 'Get tasks of todolist'})
     @ApiResponse({status: 200, type: Todolists})
     @UseGuards(JwtAuthGuard)

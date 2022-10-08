@@ -28,4 +28,13 @@ export class TodolistsService {
     async getById(id: number): Promise<Todolists> {
         return this.todolistRepository.findByPk(id, { include: { all: true } });
     }
+
+    async update(id: number, title: string): Promise<any> {
+         return this.todolistRepository.update(
+            {title},
+            {where: {id}}
+        ).then(() => {
+            return {message: 'ok', title}
+         })
+    }
 }
